@@ -2,7 +2,7 @@
 
 プロンプトベースのレシートOCRシステムです。レシート画像から店舗名、日付、金額、カテゴリを自動抽出します。
 
-## 🚀 特徴
+## 特徴
 
 - **APIキー不要**: 外部サービス不要
 - **プロンプトベース処理**: シンプルな画像解析
@@ -10,7 +10,7 @@
 - **日本語対応**: 日本のレシート形式に最適化
 - **シンプル構成**: 1つのエンドポイントで完結
 
-## 📁 プロジェクト構造
+## プロジェクト構造
 
 ```
 py-st/
@@ -31,7 +31,7 @@ py-st/
 └── README.md                   # このファイル
 ```
 
-## ⚙️ セットアップ手順
+## セットアップ手順
 
 ### 1. 環境要件
 
@@ -41,27 +41,23 @@ py-st/
 ### 2. プロジェクトセットアップ
 
 ```bash
-# リポジトリをクローン
 git clone <repository-url>
 cd py-st
 
-# uv環境でセットアップ
 uv sync
 ```
 
-## 🎯 使用方法
+## 使用方法
 
 ### ローカル開発サーバー起動
 
 ```bash
-# レシートOCR APIサーバー（ポート8000推奨）
 uv run fastapi dev
 ```
 
 ### レシートOCR解析
 
 ```bash
-# Base64エンコードされた画像でレシート解析
 curl -X POST "http://localhost:8000/api/v1/receipt/analyze" \
   -H "Content-Type: application/json" \
   -d '{
@@ -79,28 +75,7 @@ curl -X POST "http://localhost:8000/api/v1/receipt/analyze" \
   -H "Content-Type: application/json" \
   -d "{\"image_base64\": \"data:image/png;base64,$base64_data\"}"
 ```
-
-### レスポンス例
-
-```json
-{
-  "success": true,
-  "receipt_data": {
-    "店舗名": "○○薬局",
-    "日付": "2024-01-15",
-    "合計金額": 1500,
-    "商品カテゴリ": "医療費"
-  },
-  "raw_text": "プロンプト処理結果テキスト",
-  "processing_time": 0.008,
-  "timestamp": "2024-01-15T10:30:00",
-  "engine_used": "prompt",
-  "confidence": 0.95,
-  "error": null
-}
-```
-
-## 📊 抽出情報
+## 抽出情報
 
 ### 自動抽出項目
 
@@ -121,7 +96,3 @@ curl -X POST "http://localhost:8000/api/v1/receipt/analyze" \
 - 計: ¥1,000
 - 総額: 1000
 - その他の金額表記
-
-## 📄 ライセンス
-
-このプロジェクトはMITライセンスのもとで公開されています。 
