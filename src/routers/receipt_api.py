@@ -7,11 +7,13 @@ from pydantic import BaseModel, Field
 
 class ReceiptOCRRequest(BaseModel):
     """レシートOCR解析リクエスト"""
+
     image_base64: str = Field(..., description="Base64エンコードされた画像データ")
 
 
 class ReceiptData(BaseModel):
     """レシート解析結果データ"""
+
     店舗名: str | None = Field(None, description="レシート発行元の店名、会社名など")
     店舗住所: str | None = Field(None, description="住所や支店名など（あれば）")
     電話番号: str | None = Field(None, description="電話番号（形式例：03-xxxx-xxxx）")
@@ -23,6 +25,7 @@ class ReceiptData(BaseModel):
 
 class ReceiptOCRResponse(BaseModel):
     """レシートOCR解析レスポンス"""
+
     success: bool = Field(..., description="解析成功フラグ")
     receipt_data: ReceiptData | None = Field(None, description="レシート解析結果")
     raw_text: str = Field(..., description="OCR抽出テキスト")
