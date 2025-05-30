@@ -5,7 +5,6 @@ from .ocr.receipt import process_receipt_ocr
 from .routers.receipt_api import ReceiptOCRRequest, ReceiptOCRResponse
 
 
-
 app = FastAPI(
     title="レシートOCR API",
     description="プロンプトベースのレシートOCRサービス",
