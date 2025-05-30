@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  レシートOCR API
+  
+  FastAPIベースのレシートOCRサービス
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 1024
+
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, staging, prod]
+    Description: デプロイメント環境
+
+Resources:
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "receipt-ocr-api-${Stage}"
+      PackageType: Image
+      Architectures:
+        - x86_64
+      MemorySize: 1024
+      Timeout: 30
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+      Events:
+        ApiGateway:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            RestApiId: !Ref ReceiptOCRRestApi
+        ApiGatewayRoot:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+            RestApiId: !Ref ReceiptOCRRestApi
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: .
+      DockerTag: python3.13-v1
+
+  api:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub "receipt-ocr-api-${Stage}"
+      StageName: !Ref Stage
+      Cors:
+        AllowMethods: "'GET,POST,OPTIONS'"
+        AllowHeaders: "'content-type,authorization'"
+        AllowOrigin: "'*'"
+      BinaryMediaTypes:
+        - image/*
+        - application/octet-stream
+
+Outputs:
+  ApiGateway:
+    Description: "Receipt OCR API Gateway endpoint URL"
+    Value: !Sub "https://${ReceiptOCRRestApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
+  ReceiptOCRFunction:
+    Description: "Receipt OCR Lambda Function ARN"
+    Value: !GetAtt ReceiptOCRApi.Arn
+  ReceiptOCRFunctionIamRole:
+    Description: "Implicit IAM Role created for Receipt OCR function"
+    Value: !GetAtt ReceiptOCRApiRole.Arn 
