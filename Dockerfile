@@ -1,12 +1,18 @@
-FROM public.ecr.aws/lambda/python:3.13
+FROM ubuntu:22.04
 
-RUN dnf update -y && \
-    dnf install -y tesseract tesseract-langpack-jpn && \
-    dnf clean all
+RUN apt-get update && apt-get install -y \
+    python3.11 python3.11-venv python3.11-dev \
+    python3-pip \
+    tesseract-ocr \
+    tesseract-ocr-jpn \
+    libglib2.0-0 libsm6 libxext6 libxrender-dev \
+    && apt-get clean
 
-COPY src/requirements.txt ${LAMBDA_TASK_ROOT}/
-RUN pip install --no-cache-dir -r ${LAMBDA_TASK_ROOT}/requirements.txt
+WORKDIR /var/task
 
-COPY src/ ${LAMBDA_TASK_ROOT}/
+COPY src/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src/ .
 
 CMD ["app.handler"]
