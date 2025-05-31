@@ -25,14 +25,12 @@ def analyze_receipt(ocr_text: str) -> ReceiptData:
             店舗名 = line
             break
 
-    # 店舗住所抽出
     店舗住所 = None
     for line in lines:
         if any(keyword in line for keyword in ["市", "区", "町", "県", "都"]):
             店舗住所 = line
             break
 
-    # 電話番号抽出
     電話番号 = None
     for line in lines:
         if "-" in line and any(char.isdigit() for char in line):
@@ -40,14 +38,12 @@ def analyze_receipt(ocr_text: str) -> ReceiptData:
                 電話番号 = line
                 break
 
-    # 日付抽出
     日付 = None
     for line in lines:
         if "2024" in line or "令和" in line:
             日付 = line
             break
 
-    # 時刻抽出
     時刻 = None
     for line in lines:
         if ":" in line and any(char.isdigit() for char in line):
@@ -55,7 +51,6 @@ def analyze_receipt(ocr_text: str) -> ReceiptData:
                 時刻 = line
                 break
 
-    # 金額抽出
     合計金額 = None
     for line in lines:
         if "合計" in line or "計" in line:
@@ -64,7 +59,6 @@ def analyze_receipt(ocr_text: str) -> ReceiptData:
                 合計金額 = max(numbers)
                 break
 
-    # カテゴリ分類
     text_lower = ocr_text.lower()
     if any(keyword in text_lower for keyword in ["薬局", "病院", "医療"]):
         商品カテゴリ = "医療費"
