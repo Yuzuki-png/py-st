@@ -2,9 +2,9 @@ name: Lint
 
 on:
   push:
-    branches: [ master, develop, staging, prod ]
+    branches: [ develop ]
   pull_request: ## プルリク使うかわからんけど一応
-    branches: [ master, develop, staging, prod ]
+    branches: [ develop ]
 
 jobs:
   lint:
