@@ -23,7 +23,7 @@ Parameters:
   Stage:
     Type: String
     Default: dev
-    AllowedValues: [dev, staging, prod]
+    AllowedValues: [dev, staging, prod, production]
     Description: デプロイメント環境
 
 Resources:
